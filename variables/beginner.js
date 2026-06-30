@@ -1,5 +1,7 @@
 import fs from 'fs';
 
+// Basic varible control
+
 const outputName = "Alejandro";
 
 let var1 = "variable 1";
@@ -12,9 +14,13 @@ var2 = var2[0];
 console.log(`Hello ${outputName}`)
 console.log(`Variable 1: ${var1} - Variable 2: ${var2}`);
 
+// Basic function working
+
 function isEven(n) {
     return n % 2 == 0;
 }
+
+// This was my air-istotle moment
 
 function sumRange(a, b) {
     let distance = b - a + 1;
@@ -49,7 +55,20 @@ function fizzBuzz(n) {
     return array;
 }
 
+// Probably this would work better
+/*
+function fastBuzz(n) {
+    const r = "";
+    if (n % 3 == 0) r += "Fizz";
+    if (n % 5 == 0) r += "Buzz";
+    
+    return r;
+}
+*/
+
 console.log(`FizzBuzz: ${fizzBuzz(20)}`);
+
+// I prefer to build an hand-maded algorithm instead use Set (Idk what Set does)
 
 function unique(arr) {
     const array = [];
@@ -88,6 +107,8 @@ const arrOfArrs = [
 
 console.log(`Flatten: ${flatten(arrOfArrs)}`);
 
+// This was my second air-istotle moment
+
 function fibonacci(slop) {
     const fibonacciArray = [0, 1];
     for (let i = 0; i < slop - 1; i++) {
@@ -106,42 +127,64 @@ function slowFibomierda(n) {
     return slowFibomierda(n - 1) + slowFibomierda(n - 2);
 }
 
+// This is clousure? Was more easy than I can imagine
+
 function memoize(fn) {
-    if (typeof fn !== 'function') {
-        console.log('Not a function');
-        return;
-    }
-
-    const code = fn.toString();
-    let cache = {};
-
-    if (!fs.existsSync('cache.json')) {
-        fs.writeFileSync("cache.json", JSON.stringify(cache));
-    }
-    cache = JSON.parse(fs.readFileSync("cache.json"));
-    console.log(`CACHE: ${cache}`);
-    if (Object.keys(cache).length > 0) {
-        console.log(cache[code]);
-
-        if (cache[code] !== undefined) {
-            return cache[code];
-        } else {
-            const answer = fn(37);
-            cache[code] = answer;
-            fs.writeFileSync("cache.json", JSON.stringify(cache));
-            return cache[code];
-        }
-    } else {
-        const answer = fn(37);
-        cache[code] = answer;
-        console.log(JSON.stringify(cache, null, 2));
-        fs.writeFileSync("cache.json", JSON.stringify(cache));
-    }
+    const cache = {};
+    return function (n) {
+        if (cache[n] !== undefined) return cache[n];
+        cache[n] = fn(n);
+        return cache[n];
+    };
 }
 
 
-const timeStart = Date.now();
-console.log(`Fibbonacci number ${memoize(slowFibomierda)}`)
+let timeStart = Date.now();
 
-const elapsedTime = Date.now() - timeStart;
-console.log(`Elapsed Time: ${elapsedTime}ms`);
+function setMark() {
+    timeStart = Date.now();
+}
+
+function displayTime(startTime) {
+    let elapsedTime = Date.now() - timeStart;
+    console.log(`Elapsed Time: ${elapsedTime}ms`);
+}
+
+setMark();
+console.log(`LOL: ${fibonacci(1000)}`);
+displayTime(timeStart);
+
+
+setMark();
+const fastFib = memoize(slowFibomierda);
+console.log(fastFib(37));
+displayTime(timeStart);
+
+setMark();
+console.log(fastFib(37));
+displayTime(timeStart);
+
+const inputA = ["El pepe", "22", "Mexico"];
+const inputB = ["Ete sech", "99", "Colombia"];
+
+// Attempt to parse
+
+function parseData(data) {
+    const obj = { name: "", age: "", country: "" };
+    obj.name = data[0];
+    obj.age = data[1];
+    obj.country = data[2];
+    return obj;
+}
+
+console.log(`Data A: ${JSON.stringify(parseData(inputA))}`);
+console.log(`Data B: ${JSON.stringify(parseData(inputB))}`);
+
+const localPath = "./esotilin.json";
+
+function read(path) {
+    return JSON.parse(fs.readFileSync(path));
+}
+
+console.log(`Read File ${localPath}: ${Object.values(read(localPath))}`)
+
