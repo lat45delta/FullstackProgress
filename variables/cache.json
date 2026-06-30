@@ -1,0 +1,1 @@
+{"function slowFibomierda(n) {\r\n    if (n <= 1) {\r\n        return n;\r\n    }\r\n    return slowFibomierda(n - 1) + slowFibomierda(n - 2);\r\n}":24157817}
